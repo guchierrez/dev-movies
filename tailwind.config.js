@@ -13,15 +13,18 @@ module.exports = {
       },
     },
   },
-  plugins: [require("daisyui")],
+  plugins: [
+    require("daisyui"),
+    require("tailwind-scrollbar")({ nocompatible: true }),
+  ],
   daisyui: {
     themes: [
       {
         mytheme: {
           primary: "#FFBB38",
-          "base-100": "#3D3D3D",
+          "base-100": "#000000",
           "base-200": "#171717",
-          "base-300": "000000",
+          "base-300": "#3D3D3D",
         },
       },
     ],
