@@ -1,3 +1,5 @@
+"use client";
+
 import { ComponentProps } from "react";
 import { MovieCard } from "./MovieCard";
 import { IMovie } from "@/app/store/UseMovieStore";

@@ -1,3 +1,5 @@
+"use client";
+
 import { useMovieStore } from "@/app/store/UseMovieStore";
 import { LogoutButton } from "./LogoutButton";
 

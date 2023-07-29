@@ -1,3 +1,5 @@
+"use client";
+
 import { useMovieStore } from "@/app/store/UseMovieStore";
 import { useRouter } from "next/navigation";
 import { FiLogOut } from "react-icons/fi";

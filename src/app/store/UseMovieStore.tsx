@@ -44,7 +44,6 @@ export interface IMovieStore {
     setLoading: Dispatch<SetStateAction<boolean>>,
     callback: () => void
   ) => Promise<void>;
-  token: string | null;
   userInfo: IUser;
   autoLogin: (userInfo: IUser) => void;
   userLogout: (callback: () => void) => void;
@@ -102,7 +101,6 @@ export const useMovieStore = create<IMovieStore>((set) => ({
       setLoading(false);
     }
   },
-  token: localStorage.getItem(LOCAL_STORAGE_KEY_TOKEN),
   userInfo: JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY_USER) ?? "null"),
   autoLogin: (userInfo: IUser) => {
     if (userInfo !== null) {
