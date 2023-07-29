@@ -71,8 +71,10 @@ export const useMovieStore = create<IMovieStore>((set) => ({
     try {
       setLoading(true);
       const { data } = await api.post<ILogin>("/login", formData);
-      localStorage.setItem(LOCAL_STORAGE_KEY_TOKEN, data.accessToken);
-      localStorage.setItem(LOCAL_STORAGE_KEY_USER, JSON.stringify(data.user));
+      if (typeof window !== "undefined") {
+        localStorage.setItem(LOCAL_STORAGE_KEY_TOKEN, data.accessToken);
+        localStorage.setItem(LOCAL_STORAGE_KEY_USER, JSON.stringify(data.user));
+      }
       set({ user: data.user });
       toast.success("Login realizado com sucesso");
       callback();
@@ -90,8 +92,10 @@ export const useMovieStore = create<IMovieStore>((set) => ({
     try {
       setLoading(true);
       const { data } = await api.post<ILogin>("/users", formData);
-      localStorage.setItem(LOCAL_STORAGE_KEY_TOKEN, data.accessToken);
-      localStorage.setItem(LOCAL_STORAGE_KEY_USER, JSON.stringify(data.user));
+      if (typeof window !== "undefined") {
+        localStorage.setItem(LOCAL_STORAGE_KEY_TOKEN, data.accessToken);
+        localStorage.setItem(LOCAL_STORAGE_KEY_USER, JSON.stringify(data.user));
+      }
       set({ user: data.user });
       toast.success("Cadastro realizado com sucesso");
       callback();
@@ -101,15 +105,20 @@ export const useMovieStore = create<IMovieStore>((set) => ({
       setLoading(false);
     }
   },
-  userInfo: JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY_USER) ?? "null"),
+  userInfo:
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY_USER) ?? "null")
+      : null,
   autoLogin: (userInfo: IUser) => {
     if (userInfo !== null) {
       set({ user: userInfo });
     }
   },
   userLogout: (callback: () => void) => {
-    localStorage.removeItem(LOCAL_STORAGE_KEY_TOKEN);
-    localStorage.removeItem(LOCAL_STORAGE_KEY_USER);
+    if (typeof window !== "undefined") {
+      localStorage.removeItem(LOCAL_STORAGE_KEY_TOKEN);
+      localStorage.removeItem(LOCAL_STORAGE_KEY_USER);
+    }
     set({ user: undefined });
     toast.success("Usuário deslogado com sucesso!");
     callback();
