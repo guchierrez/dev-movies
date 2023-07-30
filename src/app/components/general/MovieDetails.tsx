@@ -6,7 +6,7 @@ import { ComponentProps } from "react";
 import { tv, VariantProps } from "tailwind-variants";
 
 const movieDetails = tv({
-  base: "flex flex-col",
+  base: "flex flex-col-reverse sm:flex-col",
   variants: {
     size: {
       sm: "gap-2",
@@ -37,11 +37,11 @@ export const MovieDetails = ({
 }: MovieDetailsProps) => {
   return (
     <div {...props} className={movieDetails({ size, className })}>
-      <div className="flex items-end justify-between">
+      <div className="flex items-end justify-between gap-10">
         <CategoryBadge size={size}>{category}</CategoryBadge>
         <MovieDuration size={size}>{duration}</MovieDuration>
       </div>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-10">
         <MovieTitle href={`/movies/${id}`} size={size}>
           {title}
         </MovieTitle>
