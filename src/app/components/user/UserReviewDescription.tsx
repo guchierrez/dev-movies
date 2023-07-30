@@ -1,8 +1,8 @@
 "use client";
 
 import { BsPencil, BsTrash } from "react-icons/bs";
-import { Rating } from "./Rating";
-import { ReviewButton } from "./ReviewButton";
+import { Rating } from "../general/Rating";
+import { ReviewButton } from "../review/ReviewButton";
 import { ComponentProps } from "react";
 import { useMovieStore } from "@/app/store/UseMovieStore";
 
@@ -19,11 +19,11 @@ export const UserReviewDescription = ({
   );
 
   return (
-    <div className="flex items-center gap-16 overflow-hidden">
+    <div className="flex items-center justify-between w-5/6 gap-16 pt-8 mx-auto overflow-hidden">
       <p className="w-3/4 leading-7 tracking-wide font-roboto">
         {props.children}
       </p>
-      <div className="flex w-1/3 gap-5">
+      <div className="flex gap-5">
         <Rating>{rating}</Rating>
         <ReviewButton
           onClick={() => deleteReviewModalRef.current?.showModal()}

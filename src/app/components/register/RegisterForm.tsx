@@ -6,8 +6,8 @@ import {
   RegisterFormSchema,
   TRegisterFormValues,
 } from "@/app/schema/RegisterSchema";
-import { Button } from "./Button";
-import { FormTextInput } from "./FormTextInput";
+import { Button } from "../general/Button";
+import { FormTextInput } from "../general/FormTextInput";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useMovieStore } from "@/app/store/UseMovieStore";

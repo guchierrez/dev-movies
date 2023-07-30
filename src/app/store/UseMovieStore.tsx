@@ -6,6 +6,8 @@ import { TLoginFormValues } from "../schema/LoginSchema";
 import { toast } from "react-toastify";
 import { Dispatch, RefObject, SetStateAction, createRef } from "react";
 import { TRegisterFormValues } from "../schema/RegisterSchema";
+import { TReviewFormValues } from "../schema/ReviewSchema";
+import { IMovieReviews } from "../interfaces";
 
 export interface IMovie {
   id: number;
@@ -55,6 +57,32 @@ export interface IMovieStore {
   addReviewModalRef: RefObject<HTMLDialogElement>;
   editReviewModalRef: RefObject<HTMLDialogElement>;
   deleteReviewModalRef: RefObject<HTMLDialogElement>;
+  addReview: (
+    formData: TReviewFormValues,
+    setLoading: Dispatch<SetStateAction<boolean>>,
+    userId: string,
+    movieId: string,
+    callback: () => void
+  ) => Promise<void>;
+  currentReview: undefined | IReview;
+  fetchReview: (movieId: string, userId: string) => Promise<void>;
+  fetchReviews: (movieId: string) => Promise<void>;
+  deleteReview: (
+    reviewId: string,
+    token: string,
+    setLoading: Dispatch<SetStateAction<boolean>>,
+    callback: () => void
+  ) => Promise<void>;
+  reviews: undefined | IMovieReviews;
+  token: string | null;
+  editReview: (
+    formData: TReviewFormValues,
+    setLoading: Dispatch<SetStateAction<boolean>>,
+    userId: string,
+    movieId: string,
+    reviewId: string,
+    callback: () => void
+  ) => Promise<void>;
 }
 
 const LOCAL_STORAGE_KEY_USER = "@devmovies_user";
@@ -126,4 +154,119 @@ export const useMovieStore = create<IMovieStore>((set) => ({
   addReviewModalRef: createRef<HTMLDialogElement>(),
   editReviewModalRef: createRef<HTMLDialogElement>(),
   deleteReviewModalRef: createRef<HTMLDialogElement>(),
+  addReview: async (
+    formData: TReviewFormValues,
+    setLoading: Dispatch<SetStateAction<boolean>>,
+    userId: string,
+    movieId: string,
+    callback: () => void
+  ) => {
+    try {
+      setLoading(true);
+      await api.post(
+        "/reviews",
+        { ...formData, userId: Number(userId), movieId: Number(movieId) },
+        {
+          headers: {
+            Authorization: `Bearer ${
+              typeof window !== undefined
+                ? localStorage.getItem(LOCAL_STORAGE_KEY_TOKEN)
+                : null
+            }`,
+          },
+        }
+      );
+      toast.success("Avaliação realizada com sucesso!");
+      callback();
+    } catch (error) {
+      toast.error("Houve algum erro com a requisição");
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  },
+  editReview: async (
+    formData: TReviewFormValues,
+    setLoading: Dispatch<SetStateAction<boolean>>,
+    userId: string,
+    movieId: string,
+    reviewId: string,
+    callback: () => void
+  ) => {
+    try {
+      setLoading(true);
+      await api.put(
+        `/reviews/${reviewId}`,
+        { ...formData, userId: Number(userId), movieId: Number(movieId) },
+        {
+          headers: {
+            Authorization: `Bearer ${
+              typeof window !== undefined
+                ? localStorage.getItem(LOCAL_STORAGE_KEY_TOKEN)
+                : null
+            }`,
+          },
+        }
+      );
+      toast.success("Avaliação realizada com sucesso!");
+      callback();
+    } catch (error) {
+      toast.error("Houve algum erro com a requisição");
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  },
+  currentReview: undefined,
+  fetchReview: async (movieId: string, userId: string) => {
+    try {
+      const { data } = await api.get<IReview[]>(
+        `/movies/${movieId}/reviews?userId=${String(userId)}`
+      );
+      const filteredReview = await data.filter(
+        (review) => review.id === Number(userId)
+      );
+      set({ currentReview: await filteredReview[0] });
+    } catch (error) {
+      console.log(error);
+    } finally {
+    }
+  },
+
+  reviews: undefined,
+  fetchReviews: async (movieId: string) => {
+    try {
+      const { data } = await api.get<IMovieReviews>(
+        `/movies/${movieId}?_embed=reviews`
+      );
+      console.log(data);
+      set({ reviews: data });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  deleteReview: async (
+    reviewId: string,
+    token: string,
+    setLoading: Dispatch<SetStateAction<boolean>>,
+    callback: () => void
+  ) => {
+    try {
+      setLoading(true);
+      await api.delete<IReview[]>(`/reviews/${reviewId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      toast.success("Avaliação excluída com sucesso");
+    } catch (error) {
+      console.log(error);
+      toast.error("Houve algum erro. Tente novamente.");
+    } finally {
+      callback();
+      setLoading(false);
+    }
+  },
+  token:
+    typeof window !== "undefined"
+      ? localStorage.getItem(LOCAL_STORAGE_KEY_TOKEN)
+      : null,
 }));

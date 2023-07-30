@@ -1,10 +1,14 @@
-import { AddReviewModal } from "@/app/components/general/AddReviewModal";
+import { AddReviewModal } from "@/app/components/add/AddReviewModal";
+import { EditReviewModal } from "@/app/components/edit/EditReviewModal";
+import { DeleteReviewModal } from "@/app/components/delete/DeleteReviewModal";
 import { MovieDetails } from "@/app/components/general/MovieDetails";
 import { RatingCard } from "@/app/components/general/RatingCard";
-import { ReviewSection } from "@/app/components/general/ReviewSection";
-import { UserReview } from "@/app/components/general/UserReview";
+import { ReviewSection } from "@/app/components/review/ReviewSection";
+import { UserReview } from "@/app/components/user/UserReview";
 import { IMovieReviews } from "@/app/interfaces";
 import { api } from "@/app/services/api";
+import { Overlay } from "@/app/components/general/Overlay";
+import { Metadata } from "next";
 
 interface PageProps {
   params: {
@@ -18,6 +22,18 @@ export async function generateStaticParams() {
   return data.map((movie) => ({
     id: String(movie.id),
   }));
+}
+
+export async function generateMetadata({ params }: PageProps) {
+  const id = params.id;
+  const { data } = await api.get<IMovieReviews>(
+    `/movies/${id}/?_embed=reviews`
+  );
+
+  return {
+    title: data.name,
+    description: data.synopsis,
+  };
 }
 
 const fetchData = async (id: string) => {
@@ -40,21 +56,18 @@ export default async function Page({ params }: PageProps) {
   return (
     <>
       <main className="relative overflow-hidden h-[32rem]">
-        <div
-          data-image
-          className="absolute top-0 left-0 z-10 w-full h-full transition-all duration-1000 overlay"
-        ></div>
-        <img
-          className="object-cover w-full h-full scale-110"
-          src={movieData.image}
-        />
+        <Overlay image={movieData.image} />
         <MovieDetails
           category={movieData.type}
           duration={movieData.duration}
-          rating={movieData.reviews.reduce(
-            (acc, review) => acc + review.score,
-            0
-          )}
+          rating={
+            movieData.reviews.length === 0
+              ? 0
+              : movieData.reviews.reduce(
+                  (acc, review) => Number(acc) + Number(review.score),
+                  0
+                ) / movieData.reviews.length
+          }
           title={movieData.name}
           size="lg"
           id={String(movieData.id)}
@@ -66,7 +79,10 @@ export default async function Page({ params }: PageProps) {
           {movieData.synopsis}
         </p>
         <UserReview id={id} />
-        <ReviewSection movieData={movieData} />
+        <ReviewSection movieId={id} />
+        <AddReviewModal movieId={id} />
+        <EditReviewModal movieId={id} />
+        <DeleteReviewModal movieId={id} />
       </div>
     </>
   );

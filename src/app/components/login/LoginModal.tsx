@@ -1,5 +1,5 @@
 import { LoginForm } from "./LoginForm";
-import { ModalHeader } from "./ModalHeader";
+import { ModalHeader } from "../general/ModalHeader";
 
 export const LoginModal = () => {
   return (

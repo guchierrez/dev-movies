@@ -1,4 +1,4 @@
-import { ModalHeader } from "./ModalHeader";
+import { ModalHeader } from "../general/ModalHeader";
 import { RegisterForm } from "./RegisterForm";
 
 export const RegisterModal = () => {

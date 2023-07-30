@@ -21,10 +21,14 @@ export default async function Home() {
           category={movieData[0]?.type}
           duration={movieData[0]?.duration}
           image={movieData[0].image}
-          rating={movieData[0].reviews.reduce(
-            (acc, review) => acc + review.score,
-            0
-          )}
+          rating={
+            movieData[0].reviews.length === 0
+              ? 0
+              : movieData[0].reviews.reduce(
+                  (acc, review) => Number(acc) + Number(review.score),
+                  0
+                ) / movieData[0].reviews.length
+          }
           title={movieData[0].name}
           id={String(movieData[0].id)}
           size="md"

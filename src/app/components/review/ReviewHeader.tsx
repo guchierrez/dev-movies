@@ -1,7 +1,7 @@
 "use client";
 
 import { ComponentProps } from "react";
-import { Button } from "./Button";
+import { Button } from "../general/Button";
 import { useMovieStore } from "@/app/store/UseMovieStore";
 
 export type ReviewHeaderProps = ComponentProps<"div"> & {

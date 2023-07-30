@@ -19,9 +19,17 @@ export const MovieSection = ({ movieData, ...props }: IMovieSectionProps) => {
           category={movie.type}
           duration={movie.duration}
           image={movie.image}
-          rating={movie.reviews.reduce((acc, review) => acc + review.score, 0)}
+          rating={
+            movie.reviews.length === 0
+              ? 0
+              : movie.reviews.reduce(
+                  (acc, review) => Number(acc) + Number(review.score),
+                  0
+                ) / movie.reviews.length
+          }
           title={movie.name}
           size="sm"
+          key={movie.id}
           id={String(movie.id)}
         />
       ))}

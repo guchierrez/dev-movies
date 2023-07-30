@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { Button } from "./Button";
-import { FormTextInput } from "./FormTextInput";
+import { Button } from "../general/Button";
+import { FormTextInput } from "../general/FormTextInput";
 import { LoginFormSchema, TLoginFormValues } from "@/app/schema/LoginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";

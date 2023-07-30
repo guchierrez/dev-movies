@@ -1,4 +1,4 @@
-import { RegisterModal } from "../components/general/RegisterModal";
+import { RegisterModal } from "../components/register/RegisterModal";
 
 export default function Register() {
   return (
