@@ -79,7 +79,7 @@ export interface IMovieStore {
   fetchReview: (movieId: string, userId: string) => Promise<void>;
   fetchReviews: (
     movieId: string,
-    setLoading: Dispatch<SetStateAction<boolean>>
+    setLoading?: Dispatch<SetStateAction<boolean>>
   ) => Promise<void>;
   deleteReview: (
     reviewId: string,

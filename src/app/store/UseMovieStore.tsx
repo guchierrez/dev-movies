@@ -181,7 +181,7 @@ export const useMovieStore = create<IMovieStore>((set) => ({
   reviews: undefined,
   fetchReviews: async (
     movieId: string,
-    setLoading: Dispatch<SetStateAction<boolean>>
+    setLoading?: Dispatch<SetStateAction<boolean>>
   ) => {
     try {
       const { data } = await api.get<IMovieReviews>(
@@ -192,7 +192,7 @@ export const useMovieStore = create<IMovieStore>((set) => ({
     } catch (error) {
       console.log(error);
     } finally {
-      setLoading(false);
+      setLoading ? setLoading(false) : null;
     }
   },
   token:
