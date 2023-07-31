@@ -1,7 +1,7 @@
 import { MovieCard } from "./components/general/MovieCard";
 import { MovieSection } from "./components/general/MovieSection";
 import { api } from "./services/api";
-import { IMovie } from "./store/UseMovieStore";
+import { IMovie } from "./interfaces";
 
 async function getData() {
   try {
