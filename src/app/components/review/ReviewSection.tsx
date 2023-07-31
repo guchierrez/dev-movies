@@ -13,16 +13,21 @@ export type ReviewSectionProps = ComponentProps<"ul"> & {
 
 export const ReviewSection = ({ movieId }: ReviewSectionProps) => {
   const { fetchReviews, reviews } = useMovieStore((store) => store);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetchReviews(movieId);
+    fetchReviews(movieId, setLoading);
   }, []);
 
   if (reviews === undefined) return;
 
   return (
     <>
-      {reviews.reviews.length > 0 ? (
+      {loading ? (
+        <div className="relative flex flex-col items-center w-full h-32">
+          <span className="absolute bottom-0 text-center translate-x-1/2 loading loading-dots loading-lg text-primary right-1/2"></span>
+        </div>
+      ) : reviews.reviews.length > 0 ? (
         <ul className="relative flex flex-col items-center gap-20 py-20 mx-auto md:grid md:gap-5 md:grid-cols-3">
           {reviews.reviews.map(({ description, score, userId }) => (
             <RatingCard key={userId} userId={String(userId)} rating={score}>
