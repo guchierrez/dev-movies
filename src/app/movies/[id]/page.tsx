@@ -62,7 +62,7 @@ export default async function Page({ params }: PageProps) {
             movieData.reviews.length === 0
               ? 0
               : movieData.reviews.reduce(
-                  (acc, review) => acc + review.score,
+                  (acc, review) => Number(acc) + Number(review.score),
                   0
                 ) / movieData.reviews.length
           }
