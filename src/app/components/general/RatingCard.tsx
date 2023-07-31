@@ -3,7 +3,7 @@
 import { ComponentProps, useEffect, useState } from "react";
 import { Rating } from "./Rating";
 import { api } from "@/app/services/api";
-import { IUser } from "@/app/store/UseMovieStore";
+import { IUser } from "@/app/interfaces";
 
 export type RatingCardProps = ComponentProps<"li"> & {
   rating: number;

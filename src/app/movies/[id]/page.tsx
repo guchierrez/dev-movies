@@ -2,13 +2,11 @@ import { AddReviewModal } from "@/app/components/add/AddReviewModal";
 import { EditReviewModal } from "@/app/components/edit/EditReviewModal";
 import { DeleteReviewModal } from "@/app/components/delete/DeleteReviewModal";
 import { MovieDetails } from "@/app/components/general/MovieDetails";
-import { RatingCard } from "@/app/components/general/RatingCard";
 import { ReviewSection } from "@/app/components/review/ReviewSection";
 import { UserReview } from "@/app/components/user/UserReview";
 import { IMovieReviews } from "@/app/interfaces";
 import { api } from "@/app/services/api";
 import { Overlay } from "@/app/components/general/Overlay";
-import { Metadata } from "next";
 
 interface PageProps {
   params: {
@@ -64,7 +62,7 @@ export default async function Page({ params }: PageProps) {
             movieData.reviews.length === 0
               ? 0
               : movieData.reviews.reduce(
-                  (acc, review) => Number(acc) + Number(review.score),
+                  (acc, review) => acc + review.score,
                   0
                 ) / movieData.reviews.length
           }

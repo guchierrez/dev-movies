@@ -1,9 +1,6 @@
 "use client";
 
 import { ComponentProps, useEffect, useState } from "react";
-import { RatingCard } from "../general/RatingCard";
-import { IMovieReviews, IReview } from "@/app/interfaces";
-
 import { useMovieStore } from "@/app/store/UseMovieStore";
 import { ReviewSectionLoading } from "./ReviewSectionLoading";
 import { EmptyReviewSection } from "./EmptyReviewSection";
