@@ -16,9 +16,9 @@ export const ReviewSection = ({ movieId }: ReviewSectionProps) => {
 
   useEffect(() => {
     fetchReviews(movieId, setLoading);
-  }, []);
+  }, [movieId]);
 
-  if (reviews === undefined) return;
+  if (reviews === undefined) return null;
 
   return (
     <>
